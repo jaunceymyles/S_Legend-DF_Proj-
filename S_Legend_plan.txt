@@ -1,0 +1,9 @@
+___Plan___
+
+- Seperate Model into ethical and non-ethical
+	- Don't include diseases for ethical?
+	- See if we can improve either by combining different columns
+
+- Make a somewhat user friendly interface
+
+- Train test split before F.E!!!
