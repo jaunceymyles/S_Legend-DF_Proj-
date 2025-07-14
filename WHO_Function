@@ -56,28 +56,66 @@ def get_multiple_typed_user_inputs(input_specs):
                     print(f"Invalid input: '{user_input_str}' could not be converted to numerical value. Please try again.")
     return responses
 
-print("--- Please fill in the following form ---")
-user_info_specs = [
 
+
+print("--- Please fill in the following form ---")
+user_info_specs_Non_sensitive = [
     {'prompt': "Infant deaths per 1000 per year?", 'type': float},
     {'prompt': "Adult mortality per 1000 per year?", 'type': float},
     {'prompt': "Alcohol consumption per person per year in litres?", 'type': float},
     {'prompt': "Percentage of Hepatitis B immunization amongst 1 year olds?(%)", 'type': int}, 
-    {'prompt': "Measles per 1000 per year?", 'type': int},
+    # {'prompt': "Measles per 1000 per year?", 'type': int},
     {'prompt': "average BMI", 'type': float},
     {'prompt': "Percentage of Polio immunization amongst 1 year olds?(%)", 'type': int},
     {'prompt': "Fatal cases of HIV per 1000 children between the ages of 0 - 4 years old per year?", 'type': float},
     {'prompt': "GDP per capita", 'type': int},
     {'prompt': "Population in million", 'type': float},
     {'prompt': "what percentage of the population between1 1-19 years are thin(%)", 'type': float},
-    {'prompt': "Number of years of Schooling(years)",'type':float},
-    {'prompt': "is the country's economy status developed?",'type':bool}
+    {'prompt': "Number of years of Schooling(years)",'type':float}
+    # {'prompt': "is the country's economy status developed?",'type':bool}
 ]
 
-user_data = get_multiple_typed_user_inputs(user_info_specs)
+user_info_specs_Sensitive = [
+    {'prompt': "Alcohol consumption per person per year in litres?", 'type': float},
+    {'prompt': "average BMI", 'type': float},
+    {'prompt': "GDP per capita", 'type': int},
+    {'prompt': "Population in million", 'type': float},
+    {'prompt': "what percentage of the population between1 1-19 years are thin(%)", 'type': float},
+    {'prompt': "Number of years of Schooling(years)",'type':float}
+]
+
+
+model_specs = {
+    "sensitive": user_info_specs_Sensitive,
+    "non-sensitive": user_info_specs_Non_sensitive
+}
+
+while True:
+    typeOfModel = get_user_text_input(
+        "What model would you like to use?\n"
+        "Sensitive: This model does NOT process medical records or economic status.\n"
+        "Non-sensitive: This model can process all types of data.\n"
+        "Please type 'Sensitive' or 'Non-sensitive': "
+    )
+    typeOfModel_lower = typeOfModel.lower()
+
+    if typeOfModel_lower in model_specs:
+        chosen_specs = model_specs[typeOfModel_lower]
+        print(f"You've selected the {typeOfModel} model. {'Medical records and economic status will not be processed.' if typeOfModel_lower == 'sensitive' else 'All data types can be processed.'} ✅")
+        # user_data = get_multiple_typed_user_inputs(chosen_specs)
+        break
+    else:
+        print("Invalid input. Please choose either 'Sensitive' or 'Non-sensitive'. Please try again.")
+
+         
+    
+
+user_data = get_multiple_typed_user_inputs(chosen_specs)
 
 print("\n--- Here is the collected data: ---")
-for i, spec in enumerate(user_info_specs):
+for i, spec in enumerate(chosen_specs):
     print(f"{spec['prompt']} (Type: {spec['type'].__name__}): {user_data[i]}")
 
+
 print("-" * 30)
+
