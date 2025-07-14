@@ -101,7 +101,7 @@ while True:
 
     if typeOfModel_lower in model_specs:
         chosen_specs = model_specs[typeOfModel_lower]
-        print(f"You've selected the {typeOfModel} model. {'Medical records and economic status will not be processed.' if typeOfModel_lower == 'sensitive' else 'All data types can be processed.'} ✅")
+        print(f"You've selected the {typeOfModel} model. {'Medical records and economic status will not be processed.' if typeOfModel_lower == 'sensitive' else 'All data types can be processed.'} ")
         # user_data = get_multiple_typed_user_inputs(chosen_specs)
         break
     else:
