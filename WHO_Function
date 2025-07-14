@@ -58,6 +58,7 @@ def get_multiple_typed_user_inputs(input_specs):
 
 
 
+
 print("--- Please fill in the following form ---")
 user_info_specs_Non_sensitive = [
     {'prompt': "Infant deaths per 1000 per year?", 'type': float},
@@ -85,9 +86,14 @@ user_info_specs_Sensitive = [
 ]
 
 
+
+sensitive_model ="SensitiveModelObject_PLACEHOLDER"
+non_sensitive_model="Non-SensitiveModelObject_PLACEHOLDER"
+
+
 model_specs = {
-    "sensitive": user_info_specs_Sensitive,
-    "non-sensitive": user_info_specs_Non_sensitive
+    "sensitive": (sensitive_model, user_info_specs_Sensitive),
+    "non-sensitive": (non_sensitive_model, user_info_specs_Non_sensitive)
 }
 
 while True:
@@ -100,9 +106,10 @@ while True:
     typeOfModel_lower = typeOfModel.lower()
 
     if typeOfModel_lower in model_specs:
-        chosen_specs = model_specs[typeOfModel_lower]
+        chosen_model_tuple = model_specs[typeOfModel_lower]
+        model = chosen_model_tuple[0]
+        chosen_specs = chosen_model_tuple[1]
         print(f"You've selected the {typeOfModel} model. {'Medical records and economic status will not be processed.' if typeOfModel_lower == 'sensitive' else 'All data types can be processed.'} ")
-        # user_data = get_multiple_typed_user_inputs(chosen_specs)
         break
     else:
         print("Invalid input. Please choose either 'Sensitive' or 'Non-sensitive'. Please try again.")
@@ -118,4 +125,3 @@ for i, spec in enumerate(chosen_specs):
 
 
 print("-" * 30)
-
